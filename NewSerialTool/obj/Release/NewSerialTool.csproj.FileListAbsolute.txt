@@ -1,0 +1,11 @@
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\bin\Release\NewSerialTool.exe.config
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\bin\Release\NewSerialTool.exe
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\bin\Release\NewSerialTool.pdb
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.AssemblyReference.cache
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.SuggestedBindingRedirects.cache
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.Form1.resources
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.Properties.Resources.resources
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.GenerateResource.cache
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.CoreCompileInputs.cache
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.exe
+C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.pdb
