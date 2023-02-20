@@ -9,14 +9,33 @@ C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Debug\NewSerial
 C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Debug\NewSerialTool.csproj.CoreCompileInputs.cache
 C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Debug\NewSerialTool.exe
 C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Debug\NewSerialTool.pdb
-C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.exe.config
-C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.exe
-C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.pdb
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.csproj.AssemblyReference.cache
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.csproj.SuggestedBindingRedirects.cache
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.Form1.resources
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.Properties.Resources.resources
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.csproj.GenerateResource.cache
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.csproj.CoreCompileInputs.cache
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.exe.config
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.exe
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.pdb
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\OpenCvSharp.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Buffers.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Memory.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Numerics.Vectors.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\OpenCvSharp.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Buffers.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Memory.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Numerics.Vectors.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.csproj.CopyComplete
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.exe
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.pdb
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\dll\x86\opencv_videoio_ffmpeg455.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\dll\x64\opencv_videoio_ffmpeg455_64.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\OpenCvSharp.Extensions.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Drawing.Common.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\OpenCvSharp.Extensions.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.Form2.resources

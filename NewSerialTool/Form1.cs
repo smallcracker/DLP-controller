@@ -1,10 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
 
 namespace NewSerialTool
 {
@@ -13,6 +17,7 @@ namespace NewSerialTool
         private long ReceiveCount = 0;
         private long SendCount = 0;
         private DateTime current_time = new DateTime();
+        private static VideoCapture capture;
         public Form1()
         {
             InitializeComponent();
@@ -35,7 +40,7 @@ namespace NewSerialTool
                     string pattern = @"[^[0-9a-fA-F]]*";
                     string replacement = "";
                     Regex rgx = new Regex(pattern);
-                    string send_data = rgx.Replace(s, replacement); 
+                    string send_data = rgx.Replace(s, replacement);
                     long num = (send_data.Length - send_data.Length % 2) / 2;
                     for (int i = 0; i < num; i++)
                     {
@@ -52,7 +57,7 @@ namespace NewSerialTool
                 {
                     string pattern = @"\b(1[0-1][0-9])\b|\b(12[0-7])\b|\b([0-9][0-9])\b|\b([1-9])\b";
                     Regex rgx = new Regex(pattern);
-                    foreach(Match match in rgx.Matches(s))
+                    foreach (Match match in rgx.Matches(s))
                     {
                         temp[0] = Convert.ToByte(match.Value, 10);
                         textBox1.AppendText(temp[0].ToString("X2") + " ");
@@ -61,7 +66,7 @@ namespace NewSerialTool
                     SendCount += rgx.Matches(s).Count;
                     textBox1.AppendText("\r\n");
                 }
-                else                
+                else
                 {
                     serialPort1.Write(s);
                     textBox1.AppendText(s + "\r\n");
@@ -297,9 +302,87 @@ namespace NewSerialTool
                 numericUpDown1.Enabled = true;     //使能时间选择
                 timer1.Stop();     //停止定时器
                 //label6.Text = "串口已打开";
-
             }
+        }
+
+        private void CamController_Enter(object sender, EventArgs e)
+        {
 
         }
+
+        private void openCamera()
+        {
+            capture = new VideoCapture(0);
+            //capture.Open(0, VideoCaptureAPIs.ANY);
+            if (!capture.IsOpened())
+            {
+                Close();
+                MessageBox.Show("打开摄像头失败");
+                return;
+            }
+            button7.Text = "Close the Camera";
+            cameraWorker.RunWorkerAsync();
+        }
+
+        private void closeCamera()
+        {
+            button7.Text = "Open the Camera";
+            cameraWorker.CancelAsync();
+            capture.Release();
+            pictureBox1.Image = null;
+        }
+
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (cameraWorker.IsBusy)
+            {
+                closeCamera();
+            }
+            else
+            {
+                openCamera();
+            }
+        }
+
+        private void cameraWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var bgWorker = (BackgroundWorker)sender;
+
+            while (!bgWorker.CancellationPending)
+            {
+                using (var frameMat = capture.RetrieveMat())
+                {
+                    var frameBitmap = BitmapConverter.ToBitmap(frameMat);
+                    bgWorker.ReportProgress(0, frameBitmap);
+                }
+                Thread.Sleep(100);
+            }
+        }
+
+        private void cameraWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            var frameBitmap = (Bitmap)e.UserState;
+            pictureBox1.Image?.Dispose();
+            pictureBox1.Height = frameBitmap.Height;
+            pictureBox1.Width = frameBitmap.Width;
+            pictureBox1.Image = frameBitmap;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (cameraWorker.IsBusy)
+            {
+                Bitmap image = new Bitmap(pictureBox1.Image);
+                image.Save(System.DateTime.Now.ToString("s").Replace(":", "-") + "-capture.jpg");
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Form2 f = new Form2();
+            f.Show();
+        }
+
     }
 }
