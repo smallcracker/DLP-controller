@@ -28,24 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(800, 450);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.KeyPreview = true;
             this.Name = "Form2";
             this.Text = "Form2";
             this.TopMost = true;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form2_KeyUp);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        public System.Windows.Forms.PictureBox pictureBox1;
     }
 }

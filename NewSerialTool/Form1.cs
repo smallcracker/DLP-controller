@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NewSerialTool
 {
@@ -18,6 +22,12 @@ namespace NewSerialTool
         private long SendCount = 0;
         private DateTime current_time = new DateTime();
         private static VideoCapture capture;
+        Form2 f = new Form2();
+        bool Form2Visible = false;
+        String SlidesPath;
+        List<String> SlidesPathList = new List<String>();
+        int DisplayProgress = 0;
+        bool timetoIncertBlackFrame = false;
         public Form1()
         {
             InitializeComponent();
@@ -380,9 +390,150 @@ namespace NewSerialTool
 
         private void button9_Click(object sender, EventArgs e)
         {
-            Form2 f = new Form2();
-            f.Show();
+            if (!Form2Visible)
+            {
+                Form2Visible = true;
+                f = new Form2();
+                f.Show();
+                this.Activate();
+            }
         }
 
+        private void button10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                if (Form2Visible)
+                {
+                    f.Close();
+                    Form2Visible = false;
+                }
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofdlg = new OpenFileDialog();
+            ofdlg.Filter = "BMP File(*.bmp)|*.bmp";
+            if (ofdlg.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap image = new Bitmap(ofdlg.FileName);
+                f.pictureBox1.Image = image;
+            }
+            Rectangle r = new Rectangle(10, 10, 300, 200);//是创建画矩形的区域  
+            f.g.DrawRectangle(Pens.Red, r);//g对象提供了画图形的方法，我们只需调用即可
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            Screen[] sc;
+            sc = Screen.AllScreens;
+            Screen scr = sc[1];
+            Rectangle rc = scr.Bounds;
+            int iWidth = rc.Width;
+            int iHeight = rc.Height;
+            System.Drawing.Image myImage = new Bitmap(iWidth, iHeight);
+            Graphics g = Graphics.FromImage(myImage);
+            g.CopyFromScreen(new System.Drawing.Point(sc[1].Bounds.Left, sc[1].Bounds.Top), new System.Drawing.Point(0, 0), new System.Drawing.Size(iWidth, iHeight));
+            myImage.Save(System.DateTime.Now.ToString("s").Replace(":", "-") + "-frame.jpg");
+        }
+        void Director(string dir)
+        {
+            DirectoryInfo d = new DirectoryInfo(dir);
+            FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
+            foreach (FileSystemInfo fsinfo in fsinfos)
+            {
+                if (fsinfo is DirectoryInfo)     //判断是否为文件夹
+                {
+                    Director(fsinfo.FullName);//递归调用
+                }
+                else
+                {
+                    //Console.WriteLine(fsinfo.FullName);//输出文件的全部路径
+                    if (fsinfo.FullName.Contains(".png") || fsinfo.FullName.Contains(".jpg") || fsinfo.FullName.Contains(".jpeg"))
+                    {
+                        SlidesPathList.Add(fsinfo.FullName);
+                    }
+                }
+            }
+            SlidesPathList.Sort();
+            foreach (String SlidePath in SlidesPathList)
+            {
+                Console.WriteLine(SlidePath);
+            }
+            label10.Text = "progres: 0/" + SlidesPathList.Count;
+        }
+
+        private void button10_Click_1(object sender, EventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                SlidesPathList.Clear();
+                DisplayProgress = 0;
+                SlidesPath = dialog.SelectedPath;
+                label9.Text = "Current Path:\n" + SlidesPath;
+                Director(SlidesPath);
+            }
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            DisplayProgress = 0;
+            numericUpDown2.Enabled = false;
+            timer2.Interval = (int)numericUpDown2.Value;
+            timer2.Start();
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (timetoIncertBlackFrame&&checkBox4.Checked)
+            {
+                System.Drawing.Image lastPic = f.pictureBox1.Image;
+                f.pictureBox1.Image = null;
+                lastPic.Dispose();
+                timer2.Interval = (int)numericUpDown3.Value;
+                timetoIncertBlackFrame = false;
+                return;
+            }
+            else
+            {
+                timer2.Interval = (int)numericUpDown2.Value;
+                timetoIncertBlackFrame = true;
+            }
+            if (f.pictureBox1.Image != null)
+            {
+                System.Drawing.Image lastPic = f.pictureBox1.Image;
+                f.pictureBox1.Image = System.Drawing.Image.FromFile(SlidesPathList[DisplayProgress++]);
+                lastPic.Dispose();
+            }
+            else
+            {
+                f.pictureBox1.Image = System.Drawing.Image.FromFile(SlidesPathList[DisplayProgress++]);
+            }
+            if (DisplayProgress >= SlidesPathList.Count)
+            {
+                System.Drawing.Image lastPic = f.pictureBox1.Image;
+                f.pictureBox1.Image = null;
+                lastPic.Dispose();
+                timer2.Stop();
+                numericUpDown2.Enabled = true;
+                DisplayProgress = 0;
+            }
+            label10.Text = "progres: " + DisplayProgress + "/" + SlidesPathList.Count;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            f.pictureBox1.Image = null;
+            timer2.Stop();
+            numericUpDown2.Enabled = true;
+            DisplayProgress = 0;
+        }
     }
 }
