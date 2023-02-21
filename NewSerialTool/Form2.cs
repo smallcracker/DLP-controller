@@ -13,7 +13,7 @@ namespace NewSerialTool
 {
     public partial class Form2 : Form
     {
-        public Graphics g;
+        public Graphics g ;
         public Form2()
         {
             InitializeComponent();
@@ -22,8 +22,11 @@ namespace NewSerialTool
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(sc[1].Bounds.Left, sc[1].Bounds.Top);
             this.WindowState = FormWindowState.Maximized;
-            g = this.CreateGraphics();
-
+            g = pictureBox1.CreateGraphics();
+            pictureBox1.Width = sc[1].Bounds.Width;
+            pictureBox1.Height = sc[1].Bounds.Height;
+            pictureBox1.Image = new Bitmap(sc[1].Bounds.Width, sc[1].Bounds.Height);
+            Console.WriteLine(sc[1].Bounds.Width);
         }
 
         private void Form2_Paint(object sender, PaintEventArgs e)

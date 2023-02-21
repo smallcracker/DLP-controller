@@ -14,6 +14,32 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using static System.Net.Mime.MediaTypeNames;
 
+struct controllerState
+{
+    public double rx, ry;//控制器输入
+    public double cx, cy;//测量量
+    public double ux, uy;//控制器输出
+
+    public void changeState(double rx, double ry, double cx, double cy, double ux, double uy)
+    {
+        this.rx = rx;
+        this.ry = ry;
+        this.cx = cx;
+        this.cy = cy;
+        this.ux = ux;
+        this.uy = uy;
+    }
+    public void copyState(controllerState a)
+    {
+        this.rx = a.rx;
+        this.ry = a.ry;
+        this.cx = a.cx;
+        this.cy = a.cy;
+        this.ux = a.ux;
+        this.uy = a.uy;
+    }
+}
+
 namespace NewSerialTool
 {
     public partial class Form1 : Form
@@ -28,6 +54,13 @@ namespace NewSerialTool
         List<String> SlidesPathList = new List<String>();
         int DisplayProgress = 0;
         bool timetoIncertBlackFrame = false;
+
+        double Kp = 0.05, Ki = 1, Kd = 1;
+
+
+        private controllerState[] State = new controllerState[4];
+
+
         public Form1()
         {
             InitializeComponent();
@@ -393,7 +426,7 @@ namespace NewSerialTool
             if (!Form2Visible)
             {
                 Form2Visible = true;
-                f = new Form2();
+                f = new Form2();                  
                 f.Show();
                 this.Activate();
             }
@@ -492,7 +525,7 @@ namespace NewSerialTool
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (timetoIncertBlackFrame&&checkBox4.Checked)
+            if (timetoIncertBlackFrame && checkBox4.Checked)
             {
                 System.Drawing.Image lastPic = f.pictureBox1.Image;
                 f.pictureBox1.Image = null;
@@ -535,5 +568,55 @@ namespace NewSerialTool
             numericUpDown2.Enabled = true;
             DisplayProgress = 0;
         }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            SolidBrush redBrush = new SolidBrush(Color.Red);
+            int x = 40;
+            int y = 70;
+            int width = 30;
+            int height = 30;
+            f.g.FillEllipse(redBrush, x, y, width, height);
+            State[3].changeState((double)numericUpDown4.Value,
+                                 (double)numericUpDown5.Value,
+                                 40.0,
+                                 70.0,
+                                 40.0,
+                                 70.0);
+        }
+
+        private void ControllerTimer_Tick(object sender, EventArgs e)
+        {
+            State[0].copyState(State[1]);
+            State[1].copyState(State[2]);
+            State[2].copyState(State[3]);
+            State[3].changeState(State[3].rx,
+                State[3].ry,
+                State[3].ux,
+                State[3].uy,
+                1.6 * State[3].ux - 0.63 * State[2].ux + 0.03 * State[2].rx ,
+                1.6 * State[3].uy - 0.63 * State[2].uy + 0.03 * State[2].ry );
+            SolidBrush blackBrush = new SolidBrush(Color.Black);
+            f.g.FillRectangle(blackBrush, 0, 0, f.pictureBox1.Width, f.pictureBox1.Height);
+            SolidBrush redBrush = new SolidBrush(Color.Red);
+            int x = (int)State[3].ux;
+            int y = (int)State[3].uy;
+            Console.WriteLine(x.ToString() + " " + y.ToString());
+            int width = 30;
+            int height = 30;
+            f.g.FillEllipse(redBrush, x, y, width, height);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            ControllerTimer.Interval = 50;
+            State[3].changeState((double)numericUpDown4.Value,
+                (double)numericUpDown5.Value,
+                State[3].cx,
+                State[3].cy,
+                State[3].ux,
+                State[3].uy);
+            ControllerTimer.Start();
+        } 
     }
 }

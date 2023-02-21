@@ -101,6 +101,12 @@
             this.button14 = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.button15 = new System.Windows.Forms.Button();
+            this.ControllerTimer = new System.Windows.Forms.Timer(this.components);
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.button16 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -119,10 +125,14 @@
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.tableLayoutPanel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            this.tableLayoutPanel12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -873,10 +883,10 @@
             // tableLayoutPanel9
             // 
             this.tableLayoutPanel9.ColumnCount = 4;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.tableLayoutPanel9.Controls.Add(this.button12, 0, 1);
             this.tableLayoutPanel9.Controls.Add(this.button11, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.button9, 0, 0);
@@ -889,7 +899,6 @@
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel9.Size = new System.Drawing.Size(1766, 467);
             this.tableLayoutPanel9.TabIndex = 0;
             // 
@@ -904,7 +913,7 @@
             this.button9.Margin = new System.Windows.Forms.Padding(6);
             this.button9.MaximumSize = new System.Drawing.Size(0, 50);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(341, 50);
+            this.button9.Size = new System.Drawing.Size(252, 50);
             this.button9.TabIndex = 0;
             this.button9.Text = "Start a New Form";
             this.button9.UseVisualStyleBackColor = false;
@@ -938,11 +947,11 @@
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button11.Font = new System.Drawing.Font("微软雅黑", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(34)))), ((int)(((byte)(59)))));
-            this.button11.Location = new System.Drawing.Point(359, 6);
+            this.button11.Location = new System.Drawing.Point(270, 6);
             this.button11.Margin = new System.Windows.Forms.Padding(6);
             this.button11.MaximumSize = new System.Drawing.Size(0, 50);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(341, 50);
+            this.button11.Size = new System.Drawing.Size(252, 50);
             this.button11.TabIndex = 2;
             this.button11.Text = "Open One Picture";
             this.button11.UseVisualStyleBackColor = false;
@@ -959,7 +968,7 @@
             this.button12.Margin = new System.Windows.Forms.Padding(6);
             this.button12.MaximumSize = new System.Drawing.Size(0, 50);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(341, 50);
+            this.button12.Size = new System.Drawing.Size(252, 50);
             this.button12.TabIndex = 3;
             this.button12.Text = "Save the Current Frame";
             this.button12.UseVisualStyleBackColor = false;
@@ -970,22 +979,23 @@
             this.groupBox4.Controls.Add(this.tableLayoutPanel10);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(709, 3);
+            this.groupBox4.Location = new System.Drawing.Point(531, 3);
             this.groupBox4.Name = "groupBox4";
             this.tableLayoutPanel9.SetRowSpan(this.groupBox4, 3);
-            this.groupBox4.Size = new System.Drawing.Size(523, 461);
+            this.groupBox4.Size = new System.Drawing.Size(612, 461);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Slides Display";
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.tableLayoutPanel12);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(1238, 3);
+            this.groupBox5.Location = new System.Drawing.Point(1149, 3);
             this.groupBox5.Name = "groupBox5";
             this.tableLayoutPanel9.SetRowSpan(this.groupBox5, 3);
-            this.groupBox5.Size = new System.Drawing.Size(525, 461);
+            this.groupBox5.Size = new System.Drawing.Size(614, 461);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Controller";
@@ -1012,7 +1022,7 @@
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(517, 434);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(606, 434);
             this.tableLayoutPanel10.TabIndex = 0;
             // 
             // button10
@@ -1026,7 +1036,7 @@
             this.button10.Margin = new System.Windows.Forms.Padding(6);
             this.button10.MaximumSize = new System.Drawing.Size(0, 50);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(246, 48);
+            this.button10.Size = new System.Drawing.Size(291, 48);
             this.button10.TabIndex = 4;
             this.button10.Text = "Set Picture Paths";
             this.button10.UseVisualStyleBackColor = false;
@@ -1036,7 +1046,7 @@
             // 
             this.numericUpDown2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numericUpDown2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(119)))), ((int)(((byte)(141)))));
-            this.numericUpDown2.Location = new System.Drawing.Point(327, 16);
+            this.numericUpDown2.Location = new System.Drawing.Point(394, 16);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1062,7 +1072,7 @@
             this.checkBox4.AutoSize = true;
             this.checkBox4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.checkBox4.ForeColor = System.Drawing.Color.White;
-            this.checkBox4.Location = new System.Drawing.Point(293, 75);
+            this.checkBox4.Location = new System.Drawing.Point(360, 75);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(189, 29);
             this.checkBox4.TabIndex = 6;
@@ -1083,14 +1093,14 @@
             this.tableLayoutPanel10.SetRowSpan(this.tableLayoutPanel11, 2);
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(511, 248);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(600, 248);
             this.tableLayoutPanel11.TabIndex = 7;
             // 
             // label9
             // 
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(193, 53);
+            this.label9.Location = new System.Drawing.Point(237, 53);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(125, 18);
             this.label9.TabIndex = 0;
@@ -1100,7 +1110,7 @@
             // 
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(193, 177);
+            this.label10.Location = new System.Drawing.Point(237, 177);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(125, 18);
             this.label10.TabIndex = 1;
@@ -1117,7 +1127,7 @@
             this.button13.Margin = new System.Windows.Forms.Padding(6);
             this.button13.MaximumSize = new System.Drawing.Size(0, 50);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(246, 48);
+            this.button13.Size = new System.Drawing.Size(291, 48);
             this.button13.TabIndex = 8;
             this.button13.Text = "Stop Displaying";
             this.button13.UseVisualStyleBackColor = false;
@@ -1134,7 +1144,7 @@
             this.button14.Margin = new System.Windows.Forms.Padding(6);
             this.button14.MaximumSize = new System.Drawing.Size(0, 50);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(246, 48);
+            this.button14.Size = new System.Drawing.Size(291, 48);
             this.button14.TabIndex = 9;
             this.button14.Text = "Start to Display";
             this.button14.UseVisualStyleBackColor = false;
@@ -1148,7 +1158,7 @@
             // 
             this.numericUpDown3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numericUpDown3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(119)))), ((int)(((byte)(141)))));
-            this.numericUpDown3.Location = new System.Drawing.Point(327, 136);
+            this.numericUpDown3.Location = new System.Drawing.Point(394, 136);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1167,6 +1177,112 @@
             0,
             0,
             0});
+            // 
+            // tableLayoutPanel12
+            // 
+            this.tableLayoutPanel12.ColumnCount = 2;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.Controls.Add(this.button16, 0, 2);
+            this.tableLayoutPanel12.Controls.Add(this.button15, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.numericUpDown4, 0, 1);
+            this.tableLayoutPanel12.Controls.Add(this.numericUpDown5, 1, 1);
+            this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 24);
+            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
+            this.tableLayoutPanel12.RowCount = 4;
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(608, 434);
+            this.tableLayoutPanel12.TabIndex = 0;
+            // 
+            // button15
+            // 
+            this.button15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(103)))), ((int)(((byte)(104)))));
+            this.button15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button15.Font = new System.Drawing.Font("微软雅黑", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(34)))), ((int)(((byte)(59)))));
+            this.button15.Location = new System.Drawing.Point(6, 6);
+            this.button15.Margin = new System.Windows.Forms.Padding(6);
+            this.button15.MaximumSize = new System.Drawing.Size(0, 50);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(292, 48);
+            this.button15.TabIndex = 5;
+            this.button15.Text = "Add the Dot";
+            this.button15.UseVisualStyleBackColor = false;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // ControllerTimer
+            // 
+            this.ControllerTimer.Tick += new System.EventHandler(this.ControllerTimer_Tick);
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.numericUpDown4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(119)))), ((int)(((byte)(141)))));
+            this.numericUpDown4.Location = new System.Drawing.Point(92, 76);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(120, 28);
+            this.numericUpDown4.TabIndex = 6;
+            this.numericUpDown4.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDown5
+            // 
+            this.numericUpDown5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.numericUpDown5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(119)))), ((int)(((byte)(141)))));
+            this.numericUpDown5.Location = new System.Drawing.Point(396, 76);
+            this.numericUpDown5.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown5.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown5.Name = "numericUpDown5";
+            this.numericUpDown5.Size = new System.Drawing.Size(120, 28);
+            this.numericUpDown5.TabIndex = 11;
+            this.numericUpDown5.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // button16
+            // 
+            this.button16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(103)))), ((int)(((byte)(104)))));
+            this.button16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button16.Font = new System.Drawing.Font("微软雅黑", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(34)))), ((int)(((byte)(59)))));
+            this.button16.Location = new System.Drawing.Point(6, 126);
+            this.button16.Margin = new System.Windows.Forms.Padding(6);
+            this.button16.MaximumSize = new System.Drawing.Size(0, 50);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(292, 48);
+            this.button16.TabIndex = 12;
+            this.button16.Text = "Change the Destnation";
+            this.button16.UseVisualStyleBackColor = false;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // Form1
             // 
@@ -1206,12 +1322,16 @@
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            this.tableLayoutPanel12.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1288,6 +1408,12 @@
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Timer ControllerTimer;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown numericUpDown5;
     }
 }
 
