@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -12,7 +13,6 @@ using System.Timers;
 using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using static System.Net.Mime.MediaTypeNames;
 
 struct controllerState
 {
@@ -583,6 +583,82 @@ namespace NewSerialTool
                                  70.0,
                                  40.0,
                                  70.0);
+        }
+
+        /// <summary>
+        /// 图像明暗调整
+        /// </summary>
+        /// <param name="b">原始图</param>
+        /// <param name="degree">亮度[-255, 255]</param>
+        /// <returns></returns>
+        public static Bitmap KiLighten(Bitmap b, int degree)
+        {
+            if (b == null)
+            {
+                return null;
+            }
+
+            if (degree < -255) degree = -255;
+            if (degree > 255) degree = 255;
+
+            try
+            {
+
+                int width = b.Width;
+                int height = b.Height;
+
+                int pix = 0;
+
+                BitmapData data = b.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+                unsafe
+                {
+                    byte* p = (byte*)data.Scan0;
+                    int offset = data.Stride - width * 3;
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width; x++)
+                        {
+                            // 处理指定位置像素的亮度
+                            for (int i = 0; i < 3; i++)
+                            {
+                                p[i] = (byte)(p[i]>0?degree:0);
+
+                                //if (degree < 0) p[i] = (byte)Math.Max(0, pix);
+                                //if (degree > 0) p[i] = (byte)Math.Min(255, pix);
+
+                            } // i
+                            p += 3;
+                        } // x
+                        p += offset;
+                    } // y
+                }
+
+                b.UnlockBits(data);
+
+                return b;
+            }
+            catch
+            {
+                return null;
+            }
+
+        } // end of Lighten
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            Bitmap image = new Bitmap(f.pictureBox1.Image);
+            Bitmap a = KiLighten(image, (int)numericUpDown6.Value);
+            f.pictureBox1.Image = a;
+            return;
+        }
+
+        private void numericUpDown6_ValueChanged(object sender, EventArgs e)
+        {
+            Bitmap image = new Bitmap(f.pictureBox1.Image);
+            Bitmap a = KiLighten(image, (int)numericUpDown6.Value);
+            f.pictureBox1.Image = a;
+            return;
         }
 
         private void ControllerTimer_Tick(object sender, EventArgs e)

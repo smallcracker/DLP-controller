@@ -9,3 +9,38 @@ C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSeri
 C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.CoreCompileInputs.cache
 C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.exe
 C:\00-class file\92-学着玩\c#\NewSerialTool\NewSerialTool\obj\Release\NewSerialTool.pdb
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\dll\x86\OpenCvSharpExtern.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\dll\x86\opencv_videoio_ffmpeg455.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\dll\x64\OpenCvSharpExtern.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\dll\x64\opencv_videoio_ffmpeg455_64.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\NewSerialTool.exe.config
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\NewSerialTool.exe.manifest
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\NewSerialTool.application
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\NewSerialTool.exe
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\NewSerialTool.pdb
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\OpenCvSharp.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\OpenCvSharp.Extensions.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Buffers.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Drawing.Common.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Memory.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Numerics.Vectors.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\OpenCvSharp.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\OpenCvSharp.Extensions.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Buffers.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Memory.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Numerics.Vectors.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.AssemblyReference.cache
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.SuggestedBindingRedirects.cache
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.Form1.resources
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.Form2.resources
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.Properties.Resources.resources
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.GenerateResource.cache
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.CoreCompileInputs.cache
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.TrustInfo.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.exe.manifest
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.application
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.csproj.CopyComplete
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.exe
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Release\NewSerialTool.pdb

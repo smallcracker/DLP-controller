@@ -39,3 +39,9 @@ C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\OpenCvSharp.Exte
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\System.Drawing.Common.dll
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\OpenCvSharp.Extensions.xml
 C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.Form2.resources
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.exe.manifest
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\NewSerialTool.application
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.TrustInfo.xml
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.exe.manifest
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\obj\Debug\NewSerialTool.application
+C:\13-大创项目\02-软件\SerialTool\NewSerialTool\bin\Debug\GxIAPINET.dll
