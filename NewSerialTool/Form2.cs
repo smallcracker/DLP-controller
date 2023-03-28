@@ -19,14 +19,15 @@ namespace NewSerialTool
             InitializeComponent();
             Screen[] sc;
             sc = Screen.AllScreens;
+            int NumberofScreens = sc.Length-1;
             this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(sc[1].Bounds.Left, sc[1].Bounds.Top);
+            this.Location = new Point(sc[NumberofScreens].Bounds.Left, sc[NumberofScreens].Bounds.Top);
             this.WindowState = FormWindowState.Maximized;
             g = pictureBox1.CreateGraphics();
-            pictureBox1.Width = sc[1].Bounds.Width;
-            pictureBox1.Height = sc[1].Bounds.Height;
-            pictureBox1.Image = new Bitmap(sc[1].Bounds.Width, sc[1].Bounds.Height);
-            Console.WriteLine(sc[1].Bounds.Width);
+            pictureBox1.Width = sc[NumberofScreens].Bounds.Width;
+            pictureBox1.Height = sc[NumberofScreens].Bounds.Height;
+            pictureBox1.Image = new Bitmap(sc[NumberofScreens].Bounds.Width, sc[NumberofScreens].Bounds.Height);
+            Console.WriteLine(sc[NumberofScreens].Bounds.Width);
         }
 
         private void Form2_Paint(object sender, PaintEventArgs e)

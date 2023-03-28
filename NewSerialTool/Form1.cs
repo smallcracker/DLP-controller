@@ -5,22 +5,20 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Ports;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 
-struct controllerState
+struct ControllerState
 {
     public double rx, ry;//控制器输入
     public double cx, cy;//测量量
     public double ux, uy;//控制器输出
 
-    public void changeState(double rx, double ry, double cx, double cy, double ux, double uy)
+    public void ChangeState(double rx, double ry, double cx, double cy, double ux, double uy)
     {
         this.rx = rx;
         this.ry = ry;
@@ -29,7 +27,7 @@ struct controllerState
         this.ux = ux;
         this.uy = uy;
     }
-    public void copyState(controllerState a)
+    public void CopyState(ControllerState a)
     {
         this.rx = a.rx;
         this.ry = a.ry;
@@ -44,21 +42,25 @@ namespace NewSerialTool
 {
     public partial class Form1 : Form
     {
+        Form2 f = new Form2();
+
+        private const string HexPattern = @"[^[0-9a-fA-F]]*";
+        private const string DECtoHEXPattern =
+            @"\b(1[0-1][0-9])\b|\b(12[0-7])\b|\b([0-9][0-9])\b|\b([1-9])\b";
+        private DateTime current_time = new DateTime();
         private long ReceiveCount = 0;
         private long SendCount = 0;
-        private DateTime current_time = new DateTime();
+
         private static VideoCapture capture;
-        Form2 f = new Form2();
-        bool Form2Visible = false;
-        String SlidesPath;
-        List<String> SlidesPathList = new List<String>();
-        int DisplayProgress = 0;
-        bool timetoIncertBlackFrame = false;
+        private bool Form2Visible = false;
+        private string SlidesPath;
+        private List<String> SlidesPathList = new List<String>();
+        private int DisplayProgress = 0;
+        private bool timetoIncertBlackFrame = false;
 
-        double Kp = 0.05, Ki = 1, Kd = 1;
+        private int MessageCount = 0;
 
-
-        private controllerState[] State = new controllerState[4];
+        private ControllerState[] State = new ControllerState[4];
 
 
         public Form1()
@@ -66,23 +68,24 @@ namespace NewSerialTool
             InitializeComponent();
         }
 
-        private void SerialMessageSend(String s)
+        private void SerialMessageSend(string s)
         {
             byte[] temp = new byte[1];
-            //serialPort1.Write(s);
-            this.Invoke((EventHandler)(delegate
+            this.Invoke((EventHandler)delegate
             {
+                // 收发窗显示发送时间
                 if (checkBox1.Checked)
                 {
                     current_time = DateTime.Now;
                     textBox1.AppendText(current_time.ToString("HH:mm:ss") + " ");
                 }
                 textBox1.AppendText("Send:     ");
+
+                // 以十六进制发送
                 if (radioButton4.Checked)
                 {
-                    string pattern = @"[^[0-9a-fA-F]]*";
                     string replacement = "";
-                    Regex rgx = new Regex(pattern);
+                    Regex rgx = new Regex(HexPattern);
                     string send_data = rgx.Replace(s, replacement);
                     long num = (send_data.Length - send_data.Length % 2) / 2;
                     for (int i = 0; i < num; i++)
@@ -90,16 +93,14 @@ namespace NewSerialTool
                         temp[0] = Convert.ToByte(send_data.Substring(i * 2, 2), 16);
                         textBox1.AppendText(send_data.Substring(i * 2, 2) + " ");
                         serialPort1.Write(temp, 0, 1);  //循环发送
-
                     }
                     SendCount += num;
                     textBox1.AppendText("\r\n");
-
                 }
+                // 接收十进制，但是以十进制发送
                 else if (radioButton5.Checked)
                 {
-                    string pattern = @"\b(1[0-1][0-9])\b|\b(12[0-7])\b|\b([0-9][0-9])\b|\b([1-9])\b";
-                    Regex rgx = new Regex(pattern);
+                    Regex rgx = new Regex(DECtoHEXPattern);
                     foreach (Match match in rgx.Matches(s))
                     {
                         temp[0] = Convert.ToByte(match.Value, 10);
@@ -109,37 +110,42 @@ namespace NewSerialTool
                     SendCount += rgx.Matches(s).Count;
                     textBox1.AppendText("\r\n");
                 }
+                // 正常发送ASCII字符
                 else
                 {
                     serialPort1.Write(s);
                     textBox1.AppendText(s + "\r\n");
                     SendCount += s.Length;
                 }
+                // 发送换行符
                 if (checkBox2.Checked)
                 {
                     SendCount += 2;
                     serialPort1.Write("\r\n");
                 }
                 label8.Text = "S:" + Convert.ToString(SendCount);
-            }));
+            });
         }
 
+        //这个异常调用程序会在完成的是关闭串口的工作，并输出异常原因。
         private void Exception_Process(Exception ex)
         {
             serialPort1 = new SerialPort();
             //刷新COM口选项
             comboBox1.Items.Clear();
             comboBox1.Items.AddRange(SerialPort.GetPortNames());
-            //响铃并显示异常给用户
-            System.Media.SystemSounds.Beep.Play();
+            //修改按钮外观
             button4.Text = "Open the Port";
             button4.BackColor = Color.ForestGreen;
             MessageBox.Show(ex.Message);
+            //重新使能串口功能选择框
             comboBox1.Enabled = true;
             comboBox2.Enabled = true;
             comboBox3.Enabled = true;
             comboBox4.Enabled = true;
             comboBox5.Enabled = true;
+
+            checkBox5.Checked = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -150,8 +156,10 @@ namespace NewSerialTool
             comboBox3.Text = "8";
             comboBox4.Text = "None";
             comboBox5.Text = "1";
+
         }
 
+        // 检测可以连接的串口
         private void button5_Click(object sender, EventArgs e)
         {
             comboBox1.Items.Clear();
@@ -164,13 +172,16 @@ namespace NewSerialTool
             {
                 if (serialPort1.IsOpen)
                 {
-                    serialPort1.Close();
+                    // 关闭串口
+                    checkBox5.Checked = false;
+                    label6.Text = "Serial Port is Closed";
                     button1.Enabled = false;
                     button2.Enabled = false;
                     button3.Enabled = false;
-                    label6.Text = "Serial Port is Closed";
                     label6.ForeColor = Color.Red;
                     button4.Text = "Open the Port";
+                    serialPort1.Dispose();
+                    //serialPort1.Close();
                     button4.BackColor = Color.ForestGreen;
                     comboBox1.Enabled = true;
                     comboBox2.Enabled = true;
@@ -180,6 +191,7 @@ namespace NewSerialTool
                 }
                 else
                 {
+                    // 打开串口
                     comboBox1.Enabled = false;
                     comboBox2.Enabled = false;
                     comboBox3.Enabled = false;
@@ -188,7 +200,6 @@ namespace NewSerialTool
                     serialPort1.PortName = comboBox1.Text;
                     serialPort1.BaudRate = Convert.ToInt32(comboBox2.Text);
                     serialPort1.DataBits = Convert.ToInt16(comboBox3.Text);
-
 
                     if (comboBox4.Text.Equals("None"))
                         serialPort1.Parity = Parity.None;
@@ -271,18 +282,23 @@ namespace NewSerialTool
             }
         }
 
+        byte[] ReceiveBuf = new byte[2000];
+
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            MessageCount++;
             try
             {
                 int num = serialPort1.BytesToRead;
-                byte[] ReceiveBuf = new byte[num];
+                Array.Clear(ReceiveBuf, 0, ReceiveBuf.Length);
                 ReceiveCount += num;
                 serialPort1.Read(ReceiveBuf, 0, num);
-                this.Invoke((EventHandler)(delegate
+
+                this.Invoke((EventHandler)delegate
                     {
                         if (checkBox1.Checked)
                         {
+
                             current_time = DateTime.Now;
                             textBox1.AppendText(current_time.ToString("HH:mm:ss") + " ");
                         }
@@ -300,19 +316,93 @@ namespace NewSerialTool
                         {
                             textBox1.AppendText(Encoding.UTF8.GetString(ReceiveBuf) + "\r\n");
                         }
+                         if (checkBox5.Checked)
+                        {
+                            string status = Encoding.UTF8.GetString(ReceiveBuf);
+                            UpdateWorkingStatusTable(status);
+                        }
                         label7.Text = "R:" + Convert.ToString(ReceiveCount);
-                    }));
+                    });
             }
             catch (Exception ex)
             {
-                System.Media.SystemSounds.Beep.Play();
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
 
+        public static readonly string[] StatusPatterns = new string[] {
+            "a(-?\\d*\\.?\\d*)",
+            "b(-?\\d*\\.?\\d*)",
+            "c(-?\\d*)",
+            "d(-?\\d*)",
+            "e(-?\\d*)",
+            "f(-?\\d*)",
+            "g(\\d*)",
+            "h(-?\\d*\\.?\\d*)",
+            "i(-?\\d*\\.?\\d*)",
+            "j(-?\\d*)",
+            "k(-?\\d*)",
+            "l(-?\\d*)",
+            "m(\\d)(\\d)(\\d)(\\d)"
+        };
+
+        public static readonly string[] statusStringHeads = new string[]
+        {
+            "Longitude:                  ",
+            "Latitude:                   ",
+            "Machine State:              ",
+            "Bx:                         ",
+            "By:                         ",
+            "Bz:                         ",
+            "B:                          ",
+            "Brigheness:                 ",
+            "Longitude Motor Angle:      ",
+            "Latitude Motor Angle:       ",
+            "xPosition:                  ",
+            "yPosition:                  ",
+            "Longitude Motor Status:     ",
+            "Latitude Motor Status:      ",
+            "xMotor State:               ",
+            "yMotor State:               ",
+            "Message Count:              "
+        };
+
+        private string ExtractInfo(string status, string pattern, int index)
+        {
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            Match m = regex.Match(status);
+            if (m.Success)
+            {
+                return m.Groups[index].Value.Remove(0,1);
+            }
+            else return "";
+        }
+        private void UpdateWorkingStatusTable(string status)
+        {
+            label11.Text = statusStringHeads[0] + ExtractInfo(status, StatusPatterns[0], 0);
+            label12.Text = statusStringHeads[1] + ExtractInfo(status, StatusPatterns[1], 0);
+            label13.Text = statusStringHeads[2] + ExtractInfo(status, StatusPatterns[2], 0);
+            double Bx = double.Parse(ExtractInfo(status, StatusPatterns[3], 0)) * 0.13;
+            double By = double.Parse(ExtractInfo(status, StatusPatterns[4], 0)) * 0.13;
+            double Bz = double.Parse(ExtractInfo(status, StatusPatterns[5], 0)) * 0.13;
+            int RealMessageCount = int.Parse(ExtractInfo(status, StatusPatterns[11], 0));
+            double B = Math.Sqrt(Bx * Bx + By * By + Bz * Bz);
+            Console.WriteLine(statusStringHeads[6] + B.ToString("0.000"));
+            label14.Text = statusStringHeads[3] + Bx.ToString();
+            label15.Text = statusStringHeads[4] + By.ToString();
+            label16.Text = statusStringHeads[5] + Bz.ToString();
+            label17.Text = statusStringHeads[6] + B.ToString("0.000");
+            label18.Text = statusStringHeads[7] + ExtractInfo(status, StatusPatterns[6], 0);
+            label19.Text = statusStringHeads[8] + ExtractInfo(status, StatusPatterns[7], 0);
+            label20.Text = statusStringHeads[9] + ExtractInfo(status, StatusPatterns[8], 0);
+            label21.Text = statusStringHeads[10] + ExtractInfo(status, StatusPatterns[9], 0);
+            label22.Text = statusStringHeads[11] + ExtractInfo(status, StatusPatterns[10], 0);
+            label23.Text = statusStringHeads[12] + ExtractInfo(status, StatusPatterns[12], 0)[0];
+            label24.Text = statusStringHeads[13] + ExtractInfo(status, StatusPatterns[12], 0)[1];
+            label25.Text = statusStringHeads[14] + ExtractInfo(status, StatusPatterns[12], 0)[2];
+            label26.Text = statusStringHeads[15] + ExtractInfo(status, StatusPatterns[12], 0)[3];
+            label27.Text = statusStringHeads[16] + (RealMessageCount-MessageCount).ToString();
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -350,7 +440,6 @@ namespace NewSerialTool
 
         private void CamController_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void openCamera()
@@ -426,7 +515,7 @@ namespace NewSerialTool
             if (!Form2Visible)
             {
                 Form2Visible = true;
-                f = new Form2();                  
+                f = new Form2();
                 f.Show();
                 this.Activate();
             }
@@ -488,7 +577,7 @@ namespace NewSerialTool
                 else
                 {
                     //Console.WriteLine(fsinfo.FullName);//输出文件的全部路径
-                    if (fsinfo.FullName.Contains(".png") || fsinfo.FullName.Contains(".jpg") || fsinfo.FullName.Contains(".jpeg"))
+                    if (fsinfo.FullName.Contains(".png") || fsinfo.FullName.Contains(".jpg") || fsinfo.FullName.Contains(".jpeg")|| fsinfo.FullName.Contains(".bmp"))
                     {
                         SlidesPathList.Add(fsinfo.FullName);
                     }
@@ -525,6 +614,17 @@ namespace NewSerialTool
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            if (DisplayProgress >= SlidesPathList.Count)
+            {
+                System.Drawing.Image lastPic = f.pictureBox1.Image;
+                f.pictureBox1.Image = null;
+                lastPic.Dispose();
+                timer2.Stop();
+                numericUpDown2.Enabled = true;
+                DisplayProgress = 0;
+                label10.Text = "progres: " + DisplayProgress + "/" + SlidesPathList.Count;
+                return;
+            }
             if (timetoIncertBlackFrame && checkBox4.Checked)
             {
                 System.Drawing.Image lastPic = f.pictureBox1.Image;
@@ -549,15 +649,6 @@ namespace NewSerialTool
             {
                 f.pictureBox1.Image = System.Drawing.Image.FromFile(SlidesPathList[DisplayProgress++]);
             }
-            if (DisplayProgress >= SlidesPathList.Count)
-            {
-                System.Drawing.Image lastPic = f.pictureBox1.Image;
-                f.pictureBox1.Image = null;
-                lastPic.Dispose();
-                timer2.Stop();
-                numericUpDown2.Enabled = true;
-                DisplayProgress = 0;
-            }
             label10.Text = "progres: " + DisplayProgress + "/" + SlidesPathList.Count;
         }
 
@@ -569,21 +660,6 @@ namespace NewSerialTool
             DisplayProgress = 0;
         }
 
-        private void button15_Click(object sender, EventArgs e)
-        {
-            SolidBrush redBrush = new SolidBrush(Color.Red);
-            int x = 40;
-            int y = 70;
-            int width = 30;
-            int height = 30;
-            f.g.FillEllipse(redBrush, x, y, width, height);
-            State[3].changeState((double)numericUpDown4.Value,
-                                 (double)numericUpDown5.Value,
-                                 40.0,
-                                 70.0,
-                                 40.0,
-                                 70.0);
-        }
 
         /// <summary>
         /// 图像明暗调整
@@ -622,7 +698,7 @@ namespace NewSerialTool
                             // 处理指定位置像素的亮度
                             for (int i = 0; i < 3; i++)
                             {
-                                p[i] = (byte)(p[i]>0?degree:0);
+                                p[i] = (byte)(p[i] > 0 ? degree : 0);
 
                                 //if (degree < 0) p[i] = (byte)Math.Max(0, pix);
                                 //if (degree > 0) p[i] = (byte)Math.Min(255, pix);
@@ -663,15 +739,15 @@ namespace NewSerialTool
 
         private void ControllerTimer_Tick(object sender, EventArgs e)
         {
-            State[0].copyState(State[1]);
-            State[1].copyState(State[2]);
-            State[2].copyState(State[3]);
-            State[3].changeState(State[3].rx,
+            State[0].CopyState(State[1]);
+            State[1].CopyState(State[2]);
+            State[2].CopyState(State[3]);
+            State[3].ChangeState(State[3].rx,
                 State[3].ry,
                 State[3].ux,
                 State[3].uy,
-                1.6 * State[3].ux - 0.63 * State[2].ux + 0.03 * State[2].rx ,
-                1.6 * State[3].uy - 0.63 * State[2].uy + 0.03 * State[2].ry );
+                1.6 * State[3].ux - 0.63 * State[2].ux + 0.03 * State[2].rx,
+                1.6 * State[3].uy - 0.63 * State[2].uy + 0.03 * State[2].ry);
             SolidBrush blackBrush = new SolidBrush(Color.Black);
             f.g.FillRectangle(blackBrush, 0, 0, f.pictureBox1.Width, f.pictureBox1.Height);
             SolidBrush redBrush = new SolidBrush(Color.Red);
@@ -683,16 +759,113 @@ namespace NewSerialTool
             f.g.FillEllipse(redBrush, x, y, width, height);
         }
 
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+        }
+
+        private void Form1_ClientSizeChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPort1.IsOpen)
+                {
+                    SerialMessageSend("b1");
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_Process(ex);
+            }
+        }
+
         private void button16_Click(object sender, EventArgs e)
         {
-            ControllerTimer.Interval = 50;
-            State[3].changeState((double)numericUpDown4.Value,
-                (double)numericUpDown5.Value,
-                State[3].cx,
-                State[3].cy,
-                State[3].ux,
-                State[3].uy);
-            ControllerTimer.Start();
-        } 
+            try
+            {
+                if (serialPort1.IsOpen)
+                {
+                    SerialMessageSend("b8000");
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_Process(ex);
+            }
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            // 获取文本框的值
+            string Longitude = textBox5.Text;
+            string Latitude = textBox6.Text;
+            string formattedLongitude, formattedLatitude;
+
+            // 将文本框的值转换为数字
+            if (int.TryParse(Longitude, out int LongitudeNumber))
+            {
+                // 将数字格式化为3位数，并在前面用0填充
+                formattedLongitude = LongitudeNumber.ToString("D3");
+            }
+            else
+            {
+                Console.WriteLine("无效的经度输入");
+                return;
+            }
+
+            // 将文本框的值转换为数字
+            if (int.TryParse(Latitude, out int LatitudeNumber))
+            {
+                // 将数字格式化为2位数，并在前面用0填充
+                formattedLatitude = LatitudeNumber.ToString("D2");
+                formattedLatitude = LatitudeNumber > 0 ? "1" + formattedLatitude : "0" + formattedLatitude;
+            }
+            else
+            {
+                Console.WriteLine("无效的经度输入");
+                return;
+            }
+            try
+            {
+                if (serialPort1.IsOpen)
+                {
+                    SerialMessageSend("y" + formattedLongitude + formattedLatitude);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_Process(ex);
+            }
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            string longitudeMaxBound = textBox7.Text;
+            try
+            {
+                if (serialPort1.IsOpen)
+                {
+                    SerialMessageSend("h" + longitudeMaxBound + " j");
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_Process(ex);
+            }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
