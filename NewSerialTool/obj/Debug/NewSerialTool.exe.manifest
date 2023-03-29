@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NewSerialTool.exe" size="63960">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NewSerialTool.exe" size="66008">
       <assemblyIdentity name="NewSerialTool" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>OL4hdwr8wLp7e5R511jldMjnE4lYLfut7QpwmNUN4W0=</dsig:DigestValue>
+        <dsig:DigestValue>EDTDlgmaz+SdFyP74YqJMbR4h2ws2jW5rHBNv0hgvGM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

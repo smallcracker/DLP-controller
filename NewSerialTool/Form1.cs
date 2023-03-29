@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using static System.Net.Mime.MediaTypeNames;
 
 struct ControllerState
 {
@@ -282,7 +283,7 @@ namespace NewSerialTool
             }
         }
 
-        byte[] ReceiveBuf = new byte[2000];
+        byte[] ReceiveBuf = new byte[40960];
 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -555,13 +556,14 @@ namespace NewSerialTool
         {
             Screen[] sc;
             sc = Screen.AllScreens;
-            Screen scr = sc[1];
+            int NumberofScreens = sc.Length - 1;
+            Screen scr = sc[NumberofScreens];
             Rectangle rc = scr.Bounds;
             int iWidth = rc.Width;
             int iHeight = rc.Height;
             System.Drawing.Image myImage = new Bitmap(iWidth, iHeight);
             Graphics g = Graphics.FromImage(myImage);
-            g.CopyFromScreen(new System.Drawing.Point(sc[1].Bounds.Left, sc[1].Bounds.Top), new System.Drawing.Point(0, 0), new System.Drawing.Size(iWidth, iHeight));
+            g.CopyFromScreen(new System.Drawing.Point(sc[NumberofScreens].Bounds.Left, sc[NumberofScreens].Bounds.Top), new System.Drawing.Point(0, 0), new System.Drawing.Size(iWidth, iHeight));
             myImage.Save(System.DateTime.Now.ToString("s").Replace(":", "-") + "-frame.jpg");
         }
         void Director(string dir)
@@ -863,9 +865,173 @@ namespace NewSerialTool
             }
         }
 
+
+        private string MagnetizationSlidesPath;
+        private List<string> MagnetizationSlidesList = new List<string>();
+        private int MagnetizationDisplayProgress = 0;
+        private int mode = 0;
+
+        void MagnetizationDirector(string dir)
+        {
+            DirectoryInfo d = new DirectoryInfo(dir);
+            FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
+            foreach (FileSystemInfo fsinfo in fsinfos)
+            {
+                if (fsinfo is DirectoryInfo)     //判断是否为文件夹
+                {
+                    MagnetizationDirector(fsinfo.FullName);//递归调用
+                }
+                else
+                {
+                    //Console.WriteLine(fsinfo.FullName);//输出文件的全部路径
+                    if (fsinfo.FullName.Contains(".png") || fsinfo.FullName.Contains(".jpg") || fsinfo.FullName.Contains(".jpeg") || fsinfo.FullName.Contains(".bmp"))
+                    {
+                        MagnetizationSlidesList.Add(fsinfo.FullName);
+                    }
+                }
+            }
+            MagnetizationSlidesList.Sort();
+            foreach (String SlidePath in MagnetizationSlidesList)
+            {
+                Console.WriteLine(SlidePath);
+            }
+            label10.Text = "progres: 0/" + MagnetizationSlidesList.Count;
+        }
         private void button20_Click(object sender, EventArgs e)
         {
+            System.Windows.Forms.FolderBrowserDialog dialog = new FolderBrowserDialog();
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                MagnetizationSlidesList.Clear();
+                MagnetizationDisplayProgress = 0;
+                MagnetizationSlidesPath = dialog.SelectedPath;
+                label9.Text = "Current Path:\n" + dialog.SelectedPath;
+                MagnetizationDirector(MagnetizationSlidesPath);
+            }
+        }
 
+        private void mainTimer_Tick(object sender, EventArgs e)
+        {
+            // 发送转向指令
+            if(mode == 0)
+            {
+                string command = MagnetizationSlidesList[MagnetizationDisplayProgress];
+                string commandExtract = command.Substring(command.Length - 11, 7);
+                try
+                {
+                    if (serialPort1.IsOpen)
+                    {
+                        Console.WriteLine(commandExtract);
+                        SerialMessageSend(commandExtract);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Exception_Process(ex);
+                }
+                mainTimer.Interval = 30000;
+                mode = 1;
+                return;
+            }
+
+            // 显示投影图案
+            if(mode == 1)
+            {
+                if (f.pictureBox1.Image != null)
+                {
+                    System.Drawing.Image lastPic = f.pictureBox1.Image;
+                    f.pictureBox1.Image = System.Drawing.Image.FromFile(MagnetizationSlidesList[MagnetizationDisplayProgress]);
+                    lastPic.Dispose();
+                    Console.WriteLine("Picture changed");
+                }
+                else
+                {
+                    f.pictureBox1.Image = System.Drawing.Image.FromFile(MagnetizationSlidesList[MagnetizationDisplayProgress]);
+                    Console.WriteLine("Picture changed");
+                }
+                mainTimer.Interval = (int)numericUpDown2.Value;
+                mode = 2;
+                return;
+            }
+
+            // 关闭投影图案
+            if(mode == 2)
+            {
+                System.Drawing.Image lastPictoDisPose = f.pictureBox1.Image;
+                f.pictureBox1.Image = null;
+                lastPictoDisPose.Dispose();
+                label10.Text = "progres: " + MagnetizationDisplayProgress + "/" + MagnetizationSlidesList.Count;
+                mode = 0;
+                mainTimer.Interval = 20;
+
+                // 判断是否完成固化流程
+                MagnetizationDisplayProgress++;
+                if (MagnetizationDisplayProgress >= MagnetizationSlidesList.Count)
+                {
+                    Console.WriteLine("All finished.");
+                    mainTimer.Stop();
+                    numericUpDown2.Enabled = true;
+                    MagnetizationDisplayProgress = 0;
+                    label10.Text = "progres: " + MagnetizationDisplayProgress + "/" + MagnetizationSlidesList.Count;
+                }
+                return;
+            }
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            MagnetizationDisplayProgress = 0;
+            numericUpDown2.Enabled = false;
+            mainTimer.Interval = 30;
+            mode = 0;
+            mainTimer.Start();
+        }
+
+        private Screen[] scforSnap;
+        private int NumberofScreensforSnap;
+        private Screen scrforSnap;
+        private Rectangle rcSnap;
+        private int iWidth;
+        private int iHeight;
+
+        private void ScreenSnapTimer_Tick(object sender, EventArgs e)
+        {
+            System.Drawing.Image myImage = new Bitmap(iWidth, iHeight);
+            Graphics g = Graphics.FromImage(myImage);
+            g.CopyFromScreen(new System.Drawing.Point(scforSnap[NumberofScreensforSnap].Bounds.Left, scforSnap[NumberofScreensforSnap].Bounds.Top), new System.Drawing.Point(0, 0), new System.Drawing.Size(iWidth, iHeight));
+            if(pictureBox2.Image != null)
+            {
+                System.Drawing.Image PictoDispose = pictureBox2.Image;
+                pictureBox2.Image = myImage;
+                PictoDispose.Dispose();
+            }
+            else
+            {
+                pictureBox2.Image = myImage;
+            }
+        }
+
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            scforSnap = Screen.AllScreens;
+            NumberofScreensforSnap = scforSnap.Length - 1;
+            scrforSnap = scforSnap[NumberofScreensforSnap];
+            rcSnap = scrforSnap.Bounds;
+            iWidth = rcSnap.Width;
+            iHeight = rcSnap.Height;
+
+            if (checkBox6.Checked)
+            {
+                ScreenSnapTimer.Interval = 1000;
+                ScreenSnapTimer.Start();
+            }
+            else
+            {
+                System.Drawing.Image PictoDispose = pictureBox2.Image;
+                pictureBox2.Image = null;
+                PictoDispose.Dispose();
+                ScreenSnapTimer.Stop();
+            }
         }
     }
 }

@@ -138,6 +138,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.ControllerTimer = new System.Windows.Forms.Timer(this.components);
+            this.mainTimer = new System.Windows.Forms.Timer(this.components);
+            this.ScreenSnapTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -1241,6 +1243,7 @@
             this.button21.TabIndex = 9;
             this.button21.Text = "Execute the Script";
             this.button21.UseVisualStyleBackColor = false;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
             // 
             // button20
             // 
@@ -1686,6 +1689,7 @@
             this.checkBox6.TabIndex = 1;
             this.checkBox6.Text = "Echo the DLP Screen";
             this.checkBox6.UseVisualStyleBackColor = true;
+            this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
             // 
             // serialPort1
             // 
@@ -1716,6 +1720,14 @@
             // ControllerTimer
             // 
             this.ControllerTimer.Tick += new System.EventHandler(this.ControllerTimer_Tick);
+            // 
+            // mainTimer
+            // 
+            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
+            // 
+            // ScreenSnapTimer
+            // 
+            this.ScreenSnapTimer.Tick += new System.EventHandler(this.ScreenSnapTimer_Tick);
             // 
             // Form1
             // 
@@ -1887,6 +1899,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.Timer mainTimer;
+        private System.Windows.Forms.Timer ScreenSnapTimer;
     }
 }
 
