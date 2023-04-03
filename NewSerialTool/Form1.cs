@@ -11,7 +11,9 @@ using System.Threading;
 using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using GxIAPINET;
 using static System.Net.Mime.MediaTypeNames;
+using VideoMode;
 
 struct ControllerState
 {
@@ -63,10 +65,16 @@ namespace NewSerialTool
 
         private ControllerState[] State = new ControllerState[4];
 
+        int m_CamNum = 0;
+        DhCamera m_Cam = new DhCamera();
 
         public Form1()
         {
             InitializeComponent();
+
+
+
+
         }
 
         private void SerialMessageSend(string s)
@@ -157,6 +165,15 @@ namespace NewSerialTool
             comboBox3.Text = "8";
             comboBox4.Text = "None";
             comboBox5.Text = "1";
+
+
+            // 大恒相机
+            DhCamera.initlib();
+            m_CamNum = DhCamera.GetCamNumFunc(); //获取识别到的相机数量
+            if (m_CamNum > 0)
+                textBox1.Text = m_Cam.GetInfo(0); //第一个相机的id
+            else
+                textBox1.Text = "未识别到相机";
 
         }
 
@@ -297,13 +314,14 @@ namespace NewSerialTool
 
                 this.Invoke((EventHandler)delegate
                     {
+                        textBox1.Text = "";
                         if (checkBox1.Checked)
                         {
 
                             current_time = DateTime.Now;
                             textBox1.AppendText(current_time.ToString("HH:mm:ss") + " ");
                         }
-                        textBox1.AppendText("Receive:  ");
+                        textBox1.AppendText("\nReceive:  ");
                         if (radioButton2.Checked)
                         {
                             textBox1.AppendText("HEX:  ");
@@ -371,13 +389,21 @@ namespace NewSerialTool
 
         private string ExtractInfo(string status, string pattern, int index)
         {
+
             Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
             Match m = regex.Match(status);
             if (m.Success)
             {
-                return m.Groups[index].Value.Remove(0,1);
+                try
+                {
+                    return m.Groups[index].Value.Remove(0,1);
+                }
+                finally
+                {
+                    
+                }
             }
-            else return "";
+            else return "0000";
         }
         private void UpdateWorkingStatusTable(string status)
         {
@@ -389,7 +415,7 @@ namespace NewSerialTool
             double Bz = double.Parse(ExtractInfo(status, StatusPatterns[5], 0)) * 0.13;
             int RealMessageCount = int.Parse(ExtractInfo(status, StatusPatterns[11], 0));
             double B = Math.Sqrt(Bx * Bx + By * By + Bz * Bz);
-            Console.WriteLine(statusStringHeads[6] + B.ToString("0.000"));
+            //Console.WriteLine(statusStringHeads[6] + B.ToString("0.000"));
             label14.Text = statusStringHeads[3] + Bx.ToString();
             label15.Text = statusStringHeads[4] + By.ToString();
             label16.Text = statusStringHeads[5] + Bz.ToString();
@@ -443,8 +469,9 @@ namespace NewSerialTool
         {
         }
 
-        private void openCamera()
+        private void openUSBCamera()
         {
+            // USB摄像头
             capture = new VideoCapture(0);
             //capture.Open(0, VideoCaptureAPIs.ANY);
             if (!capture.IsOpened())
@@ -457,8 +484,9 @@ namespace NewSerialTool
             cameraWorker.RunWorkerAsync();
         }
 
-        private void closeCamera()
+        private void closeUSBCamera()
         {
+            // USB摄像头
             button7.Text = "Open the Camera";
             cameraWorker.CancelAsync();
             capture.Release();
@@ -468,14 +496,63 @@ namespace NewSerialTool
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (cameraWorker.IsBusy)
+            // 大恒摄像头
+            if (m_Cam.CamOpen())
             {
-                closeCamera();
+                closeDahengCamera();
             }
             else
             {
-                openCamera();
+                openDahengCamera();
             }
+
+            //USB摄像头
+            //if (cameraWorker.IsBusy)
+            //{
+            //    closeUSBCamera();
+            //}
+            //else
+            //{
+            //    openUSBCamera();
+            //}
+        }
+        public void ShowImage(int index, Bitmap objdata)
+        {
+            if (!m_Cam.m_bIsColor)
+            {
+                //添加调色板
+                ColorPalette palette;
+                palette = objdata.Palette;
+                int i = 0;
+                for (i = 0; i <= 255; i++)
+                {
+                    palette.Entries[i] = System.Drawing.Color.FromArgb(i, i, i);
+                }
+                objdata.Palette = palette;
+
+            }
+            //BitmapImage objdataImage = BitmapToBitmapImage(objdata);       
+            Action action1 = () =>
+            {
+                pictureBox1.Image = objdata;
+            };
+            pictureBox1.BeginInvoke(action1);
+        }
+        private void openDahengCamera()
+        {
+            if (m_CamNum > 0)
+                if (!m_Cam.CamOpen())
+                    m_Cam.OpenCameraFunc(0, ShowImage);
+            if (m_Cam.CamOpen())
+                m_Cam.StartAcqFunc();
+        }
+
+        private void closeDahengCamera()
+        {
+            if (m_Cam.CamOpen())
+                m_Cam.CloseCameraFunc();
+            if (m_Cam.CamOpen())
+                m_Cam.StopAcqFunc();
         }
 
         private void cameraWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -828,7 +905,7 @@ namespace NewSerialTool
             if (int.TryParse(Latitude, out int LatitudeNumber))
             {
                 // 将数字格式化为2位数，并在前面用0填充
-                formattedLatitude = LatitudeNumber.ToString("D2");
+                formattedLatitude = Math.Abs(LatitudeNumber).ToString("D2");
                 formattedLatitude = LatitudeNumber > 0 ? "1" + formattedLatitude : "0" + formattedLatitude;
             }
             else
@@ -840,6 +917,7 @@ namespace NewSerialTool
             {
                 if (serialPort1.IsOpen)
                 {
+                    Console.WriteLine("y" + formattedLongitude + formattedLatitude);
                     SerialMessageSend("y" + formattedLongitude + formattedLatitude);
                 }
             }
@@ -1032,6 +1110,18 @@ namespace NewSerialTool
                 PictoDispose.Dispose();
                 ScreenSnapTimer.Stop();
             }
+        }
+
+        private void cameraTimer_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //大恒相机
+            if (m_Cam.CamOpen())
+                m_Cam.CloseCameraFunc();
         }
     }
 }

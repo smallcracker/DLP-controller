@@ -43,26 +43,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GxIAPINET.dll" size="3282432">
-      <assemblyIdentity name="GxIAPINET" version="1.0.8117.34307" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GxIAPINET.dll" size="2419712">
+      <assemblyIdentity name="GxIAPINET" version="1.0.8382.22587" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>l/ZeXY9AaELhV+kCeQJXOqAEViLe6oODWnLiKv6ZXBY=</dsig:DigestValue>
+        <dsig:DigestValue>k5tAADClcxrNv2NBo023AkowLYXw4DPyAbePrDNUsOQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NewSerialTool.exe" size="66008">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NewSerialTool.exe" size="71640">
       <assemblyIdentity name="NewSerialTool" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>EDTDlgmaz+SdFyP74YqJMbR4h2ws2jW5rHBNv0hgvGM=</dsig:DigestValue>
+        <dsig:DigestValue>hXvpyrR58CIuWncRd/4/joJdZMVubuzgns8QMpCzvCU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

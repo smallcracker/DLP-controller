@@ -140,6 +140,7 @@
             this.ControllerTimer = new System.Windows.Forms.Timer(this.components);
             this.mainTimer = new System.Windows.Forms.Timer(this.components);
             this.ScreenSnapTimer = new System.Windows.Forms.Timer(this.components);
+            this.cameraTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -307,7 +308,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(288, 54);
             this.textBox3.TabIndex = 5;
-            this.textBox3.Text = "b2000";
+            this.textBox3.Text = "b2700";
             // 
             // textBox4
             // 
@@ -860,6 +861,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(688, 399);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
@@ -1097,7 +1099,7 @@
             this.numericUpDown2.Size = new System.Drawing.Size(120, 28);
             this.numericUpDown2.TabIndex = 5;
             this.numericUpDown2.Value = new decimal(new int[] {
-            1000,
+            6000,
             0,
             0,
             0});
@@ -1370,6 +1372,7 @@
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(397, 50);
             this.textBox7.TabIndex = 7;
+            this.textBox7.Text = "0";
             // 
             // tableLayoutPanel13
             // 
@@ -1693,7 +1696,7 @@
             // 
             // serialPort1
             // 
-            this.serialPort1.ReceivedBytesThreshold = 30;
+            this.serialPort1.ReceivedBytesThreshold = 10;
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
             // timer1
@@ -1729,6 +1732,10 @@
             // 
             this.ScreenSnapTimer.Tick += new System.EventHandler(this.ScreenSnapTimer_Tick);
             // 
+            // cameraTimer
+            // 
+            this.cameraTimer.Tick += new System.EventHandler(this.cameraTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -1736,12 +1743,13 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(34)))), ((int)(((byte)(59)))));
             this.ClientSize = new System.Drawing.Size(2474, 1144);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(1600, 600);
             this.Name = "Form1";
             this.Text = "New Serial Tool";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ClientSizeChanged += new System.EventHandler(this.Form1_ClientSizeChanged);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
@@ -1901,6 +1909,7 @@
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.Timer mainTimer;
         private System.Windows.Forms.Timer ScreenSnapTimer;
+        private System.Windows.Forms.Timer cameraTimer;
     }
 }
 

@@ -75,8 +75,9 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GxIAPINET">
-      <HintPath>..\..\..\..\Users\Asus\Downloads\Compressed\GalaxyDemo\VideoMode\VideoMode\bin\Debug\GxIAPINET.dll</HintPath>
+    <Reference Include="GxIAPINET, Version=1.0.8117.34307, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Daheng Imaging\GalaxySDK\APIDll\Win32\.NET4.0\GxIAPINET.dll</HintPath>
     </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenCvSharp4.4.7.0.20230115\lib\netstandard2.0\OpenCvSharp.dll</HintPath>
@@ -113,6 +114,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DhCamera.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
